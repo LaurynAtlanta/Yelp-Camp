@@ -1,0 +1,19 @@
+<%- include('partials/header')%>
+<div class="container">
+    <header class='jumbotron'>
+        <h1>WELCOME TO YELP CAMP</h1>
+        <P>VIEW OUR HANDPICKED CAMOGROUNDS FROM ALL OVER THE WORLD</P>
+    </header>
+    
+    <a href="/campgrounds/new">Add a new campground</a>
+    
+    <% campgrounds.forEach(function(ground) {%>
+        <div>
+            <h4><%=ground.name%></h4>
+            <img src="<%=ground.image%>">
+        </div>
+    <%});%>
+</div>
+
+
+<%- include('partials/footer')%>
