@@ -14,17 +14,39 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
 
-let campgrounds = [
-    {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-    {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'}
-];
+
+//SCHEMA SET UP
+let campgroundSchema = new mongoose.Schema({
+    name:String,
+    image:String
+})
+
+let Campground = mongoose.model('Campground', campgroundSchema);
+
+Campground.create(
+    {
+        name: 'Rowing Seasons', 
+        image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'
+    }, function(err, campground){
+    if(err){
+        console.log(err);
+    } else{
+        console.log('Newly created campground: ');
+        console.log(campground);
+    }
+});
+
+// let campgrounds = [
+//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
+//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'}
+// ];
 
 app.get('/', function(req, res){
     res.render('landing');
