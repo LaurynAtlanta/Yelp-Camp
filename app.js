@@ -1,6 +1,14 @@
-let express = require('express');
-let app = express();
-let bodyParser = require('body-parser');
+let express = require('express'),
+    app = express(),
+    bodyParser = require('body-parser'),
+    mongoose =require('mongoose');
+//looks for yelpcamp or creates it
+mongoose.connect('mongodb://localhost:27017/yelpcamp', {
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+})
+.then(() =>console.log('Connected to Db!'))
+.catch(error => console.log(error.message));
 
 app.use(bodyParser.urlencoded({extended: true}));
 
