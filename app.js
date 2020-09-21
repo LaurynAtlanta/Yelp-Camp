@@ -23,47 +23,48 @@ let campgroundSchema = new mongoose.Schema({
 
 let Campground = mongoose.model('Campground', campgroundSchema);
 
-Campground.create(
-    {
-        name: 'Rowing Seasons', 
-        image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'
-    }, function(err, campground){
-    if(err){
-        console.log(err);
-    } else{
-        console.log('Newly created campground: ');
-        console.log(campground);
-    }
-});
-
-// let campgrounds = [
-//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Salmon Creek', image:'https://images.pexels.com/photos/1309584/pexels-photo-1309584.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Rowing Seasons', image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'},
-//     {name: 'Robery Downey Lake', image:'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&h=350'}
-// ];
+// Campground.create(
+//     {
+//         name: 'Rowing Seasons', 
+//         image:'https://images.pexels.com/photos/699558/pexels-photo-699558.jpeg?auto=compress&cs=tinysrgb&h=350'
+//     }, function(err, campground){
+//     if(err){
+//         console.log(err);
+//     } else{
+//         console.log('Newly created campground: ');
+//         console.log(campground);
+//     }
+// });
 
 app.get('/', function(req, res){
     res.render('landing');
 });
 
 app.get('/campgrounds', function(req, res){
-    res.render('campgrounds', {campgrounds: campgrounds});
+    //get all campgrounds from DB
+    Campground.find({}, function(err, allCampgrounds){
+        if(err){
+            console.log(err);
+        } else{ //send them to campgrounds.ejs file
+            res.render('campgrounds', {campgrounds: allCampgrounds});
+        }
+    });
 });
 
 app.post('/campgrounds', function(req, res){
+       //get data from form and add to campgrounds array
     let name = req.body.name;
     let image = req.body.image;
     let newcampground= {name:name, image:image};
-    campgrounds.push(newcampground);
-    res.redirect('/campgrounds');
-    //get data from form and add to campgrounds array
-    //redirect back to campgrounds page
+    //create a new campground and save to database
+    Campground.create(newcampground, function(err, newlycreated){
+        if(err){
+            console.log(err)
+        } else{
+            //redirect back to campgrounds page if it worked to see the added campground
+            res.redirect('/campgrounds');
+        }
+    })
 });
 
 app.get('/campgrounds/new', function(req, res){
