@@ -6,7 +6,7 @@ let express = require('express'),
     Comment = require('./models/comment'),
     seedDB = require('./seeds');
 
-seedDB();
+
 //looks for yelpcamp or creates it
 mongoose.connect('mongodb://localhost:27017/yelpcamp', {
     useNewUrlParser:true,
@@ -16,8 +16,10 @@ mongoose.connect('mongodb://localhost:27017/yelpcamp', {
 .catch(error => console.log(error.message));
 
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(express.static(__dirname +"/public"));
 app.set('view engine', 'ejs');
+seedDB();
+
 
 
 app.get('/', function(req, res){

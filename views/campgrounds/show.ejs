@@ -13,7 +13,7 @@
         <div class="col-md-9">
             <div class="thumbnail">
                 <img class='image-responsive' src="<%=campground.image%>" >
-                <div class="caption-full">
+                <div class="caption">
                     <h4 class='pull-right'>$9.00</h4>
                     <h4><a href=""><%=campground.name%></a></h4>
                     <p><%=campground.description%></p>
@@ -23,6 +23,7 @@
                 <div class="text-right">
                     <a class='btn btn-success' href="/campgrounds/<%= campground._id%>/comments/new">Add new comment</a>
                 </div>
+                <hr>
                 <%campground.comments.forEach(function(comment){%>
                     <div class="row">
                         <div class="col-md-12">
