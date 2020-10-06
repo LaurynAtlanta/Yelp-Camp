@@ -16,7 +16,7 @@ router.get('/campgrounds', function(req, res){
 });
 
 //POST TO HOME PAGE
-router.post('/campgrounds', function(req, res){
+router.post('/campgrounds',isLoggedIn, function(req, res){
        //get data from form and add to campgrounds array
     let name = req.body.name;
     let image = req.body.image;
@@ -34,7 +34,7 @@ router.post('/campgrounds', function(req, res){
 });
 
 //NEW CAMPGROUNDS PAGE
-router.get('/campgrounds/new', function(req, res){
+router.get('/campgrounds/new',isLoggedIn, function(req, res){
     res.render('campgrounds/new');
 });
 
@@ -51,5 +51,15 @@ router.get('/campgrounds/:id', function(req, res){
         }
     })
 });
+
+//MIDDLEWARE
+//THIS CHECKS IF THE USER IS LOGGED IN
+function isLoggedIn(req, res, next){ //putting this in both comments and index.js
+    if(req.isAuthenticated()){
+        return next();
+    }else{
+        res.redirect('/login');
+    }
+}
 
 module.exports=router;
