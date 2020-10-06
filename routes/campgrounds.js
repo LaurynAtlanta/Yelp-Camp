@@ -21,12 +21,17 @@ router.post('/campgrounds',isLoggedIn, function(req, res){
     let name = req.body.name;
     let image = req.body.image;
     let description = req.body.description;
-    let newcampground= {name:name, image:image, description:description};
+    let author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    let newcampground= {name:name, image:image, description:description, author: author};
     //create a new campground and save to database
     Campground.create(newcampground, function(err, newlycreated){
         if(err){
             console.log(err)
         } else{
+            console.log(newlycreated);
             //redirect back to campgrounds page if it worked to see the added campground
             res.redirect('/campgrounds');
         }
