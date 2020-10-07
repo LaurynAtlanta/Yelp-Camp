@@ -17,6 +17,7 @@ router.get('/campgrounds', function(req, res){
 
 //POST TO HOME PAGE
 router.post('/campgrounds',isLoggedIn, function(req, res){
+    //we only move on to this if id logged in is true.
        //get data from form and add to campgrounds array
     let name = req.body.name;
     let image = req.body.image;
@@ -31,7 +32,6 @@ router.post('/campgrounds',isLoggedIn, function(req, res){
         if(err){
             console.log(err)
         } else{
-            console.log(newlycreated);
             //redirect back to campgrounds page if it worked to see the added campground
             res.redirect('/campgrounds');
         }
@@ -40,6 +40,7 @@ router.post('/campgrounds',isLoggedIn, function(req, res){
 
 //CREATE NEW CAMPGROUNDS PAGE
 router.get('/campgrounds/new',isLoggedIn, function(req, res){
+    //only passed through if isLoggedIn is true
     res.render('campgrounds/new');
 });
 
@@ -58,17 +59,13 @@ router.get('/campgrounds/:id', function(req, res){
 });
 
 //EDIT CAMPGROUND ROUTE
-router.get('/campgrounds/:id/edit', function(req, res){
+router.get('/campgrounds/:id/edit',checkCampgroundOwnership, function(req, res){
+    //you only get to this code if you passed through checkCampgroundOwnership
     Campground.findById(req.params.id, function(err, foundCampground){
-        if(err){
-            console.log(err);
-            res.redirect('/campgrounds')
-        }else{
-            //RENDER SHOW TEMPLATE WITH THAT CAMPGORUND
-            res.render('campgrounds/edit', {campground: foundCampground});
-        }
-    });
+        res.render('campgrounds/edit', {campground: foundCampground});
+     });
 });
+
 //UPDATE CAMPGROUND ROUTE
 router.put('/campgrounds/:id', function(req, res){
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
@@ -98,6 +95,26 @@ function isLoggedIn(req, res, next){ //putting this in both comments and index.j
         return next();
     }else{
         res.redirect('/login');
+    }
+}
+
+function checkCampgroundOwnership(req,res,next){
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, function(err, foundCampground){
+            if(err){
+                console.log(err);
+                res.redirect('back')
+                }else{
+                    //does user own the campground?
+                    if(foundCampground.author.id.equals(req.user._id)){
+                        next();
+                    }else{
+                        res.redirect('back');
+                    }
+                }
+        });
+    } else{
+        res.redirect('back');
     }
 }
 

@@ -14,11 +14,11 @@
             <div class="thumbnail">
                 <img class='image-responsive' src="<%=campground.image%>" >
                 <div class="caption">
-                    <h4 class='pull-right'>$9.00</h4>
-                    <h4><a href=""><%=campground.name%></a></h4>
+                    <h3 class='pull-right'>$9.00</h3>
+                    <h3><a href=""><%=campground.name%></a></h3>
                     <p><%=campground.description%></p>
                     <p><em>Submitted by: <%=campground.author.username%></em></p>
-                    <a class='btn btn-warning' href="/campgrounds/<%=campground._id%>/edit">Edit</a>
+                    <a class='btn btn-xs btn-warning' href="/campgrounds/<%=campground._id%>/edit">Edit</a>
                     <form id="delete-form" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
                     <button class='btn btn-xs btn-danger'>Delete</button>
                 </form>
