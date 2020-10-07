@@ -80,6 +80,16 @@ router.put('/campgrounds/:id', function(req, res){
     })
 })
 //DELETE CAMPGROUND ROUTE
+router.delete('/campgrounds/:id', function (req, res){
+    Campground.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err)
+            res.redirect('/campgrounds');
+        } else{
+            res.redirect('/campgrounds');
+        }
+    })
+})
 
 //MIDDLEWARE
 //THIS CHECKS IF THE USER IS LOGGED IN
