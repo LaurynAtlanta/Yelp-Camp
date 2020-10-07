@@ -60,3 +60,7 @@ mongoose.connect('mongodb://localhost:27017/yelpcamp', {
 app.listen(3000, function(){
     console.log('Yelp camp server is running');
 })
+
+
+//authentication is checking if you are who you say
+//authorization is security clearance and what you can do
