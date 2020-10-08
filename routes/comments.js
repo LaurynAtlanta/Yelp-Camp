@@ -39,7 +39,7 @@ router.post('/campgrounds/:id/comments/',isLoggedIn, function(req, res){
 });
 
 //edit comment route
-router.get('/campgrounds/:id/comments/:comment_id/edit', function(req, res){
+router.get('/campgrounds/:id/comments/:comment_id/edit', checkCommentOwnership, function(req, res){
     Comment.findById(req.params.comment_id, function(err, foundComment){
         if(err){
             res.redirect('back');
@@ -50,7 +50,7 @@ router.get('/campgrounds/:id/comments/:comment_id/edit', function(req, res){
 });
 
 //update comment route
-router.put('/campgrounds/:id/comments/:comment_id', function(req, res){
+router.put('/campgrounds/:id/comments/:comment_id',checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
         if(err){
             res.redirect('back')
@@ -60,7 +60,7 @@ router.put('/campgrounds/:id/comments/:comment_id', function(req, res){
     });
 });
 
-router.delete('/campgrounds/:id/comments/:comment_id', function (req, res){
+router.delete('/campgrounds/:id/comments/:comment_id',checkCommentOwnership, function (req, res){
     Comment.findByIdAndRemove(req.params.comment_id, function(err){
         if(err){
             console.log(err)
@@ -81,5 +81,24 @@ function isLoggedIn(req, res, next){ //putting this in both comments and index.j
     }
 }
 
+function checkCommentOwnership(req,res,next){
+    if(req.isAuthenticated()){
+        Comment.findById(req.params.comment_id, function(err, foundComment){
+            if(err){
+                console.log(err);
+                res.redirect('back')
+                }else{
+                    //does user own the comment?
+                    if(foundComment.author.id.equals(req.user._id)){ //use equals because its a mongo id
+                        next();
+                    }else{
+                        res.redirect('back');
+                    }
+                }
+        });
+    } else{
+        res.redirect('back');
+    }
+}
 
 module.exports=router;
