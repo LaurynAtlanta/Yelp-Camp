@@ -21,13 +21,14 @@ router.post('/campgrounds',middleware.isLoggedIn, function(req, res){
     //we only move on to this if id logged in is true.
        //get data from form and add to campgrounds array
     let name = req.body.name;
+    let price = req.body.price;
     let image = req.body.image;
     let description = req.body.description;
     let author = {
         id: req.user._id,
         username: req.user.username
     }
-    let newcampground= {name:name, image:image, description:description, author: author};
+    let newcampground= {name:name, price:price, image:image, description:description, author: author};
     //create a new campground and save to database
     Campground.create(newcampground, function(err, newlycreated){
         if(err){
